@@ -2,7 +2,7 @@ Lets build a game! We’ll be making [~Lingo~](https://www.youtube.com/watch?v=T
 
 The rules:
 * The player has to guess the Wordle in six attempts or less
-* Every word, which is entered should be in the (5 letter) word list
+* Every word, which is entered should be in the (5 letter) [word list](https://github.com/tabatkins/wordle-list/blob/main/words)
 * If the letter is correct, the color will turn green
 * If the letter is correct but placed wrong then it would turn yellow
 * An incorrect letter turns gray
