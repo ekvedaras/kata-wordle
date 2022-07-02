@@ -6,13 +6,31 @@ use Stringable;
 
 class Word implements Stringable
 {
-    public function __construct(
-        private readonly string $value,
-    ) {
+    private readonly string $word;
+
+    public function __construct(string $word)
+    {
+        if (empty($word)) {
+            throw WordException::cannotBeEmpty();
+        }
+
+        if (strlen($word) !== Wordle::WordLength) {
+            throw WordException::invalidLength(
+                expectedLength: Wordle::WordLength,
+                word:           $word,
+            );
+        }
+
+        $this->word = strtolower($word);
     }
 
     public function __toString(): string
     {
-        return $this->value;
+        return $this->word;
+    }
+
+    public function equals(Word $word): bool
+    {
+        return $this->word === $word->word;
     }
 }
