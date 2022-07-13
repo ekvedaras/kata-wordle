@@ -2,7 +2,7 @@
 
 namespace Wordle;
 
-enum GuessOutcome
+enum WordGuessOutcome
 {
     case Won;
     case TryAgain;

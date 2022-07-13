@@ -7,7 +7,8 @@ class Wordle
     public const WordLength = 5;
     public const MaxAttempts = 6;
 
-    private ?WordList $guesses;
+    /** @var Guess[] */
+    private array $guesses = [];
 
     public function __construct(
         private readonly WordList $wordList,
@@ -18,23 +19,36 @@ class Wordle
         }
     }
 
-    public function guess(Word $word): GuessOutcome
+    public function guess(Word $word): WordGuessOutcome
     {
-        $this->guesses ??= new WordList([$word]);
-        $this->guesses = $this->guesses->with($word);
+        $guess = new Guess(
+            word:        $word,
+            wordToGuess: $this->wordToGuess,
+        );
+
+        if (!$this->wordList->contains($word)) {
+            throw GuessException::noSuchWord($word);
+        }
+
+        if (in_array($guess, $this->guesses)) {
+            throw GuessException::alreadyGuessed($word);
+        }
+
+        $this->guesses[] = $guess;
 
         if ($this->wordToGuess->equals($word)) {
-            return GuessOutcome::Won;
+            return WordGuessOutcome::Won;
         }
 
-        if ($this->guesses->count() >= self::MaxAttempts) {
-            return GuessOutcome::Lost;
+        if (count($this->guesses) >= self::MaxAttempts) {
+            return WordGuessOutcome::Lost;
         }
 
-        return GuessOutcome::TryAgain;
+        return WordGuessOutcome::TryAgain;
     }
 
-    public function guesses(): WordList
+    /** @return Guess[] */
+    public function guesses(): array
     {
         return $this->guesses;
     }

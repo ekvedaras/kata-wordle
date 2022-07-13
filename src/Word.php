@@ -33,4 +33,20 @@ class Word implements Stringable
     {
         return $this->word === $word->word;
     }
+
+    /** @return Letter[] */
+    public function letters(): array
+    {
+        return array_map(fn(string $letter) => new Letter($letter), str_split($this->word));
+    }
+
+    public function letter(int $at): Letter
+    {
+        return new Letter($this->word[$at]);
+    }
+
+    public function contains(Letter $letter): bool
+    {
+        return str_contains($this->word, $letter);
+    }
 }
